@@ -13,9 +13,7 @@ class TestLeafNode(unittest.TestCase):
             "target": "_blank",
         }
         leaf_node = LeafNode("a", "Click me!", props_dict)
-        print(f"leafNode props: {leaf_node.props}")
         html = leaf_node.to_html()
-        print(f"generated HTML: {html}")
 
         # Dictionary is unordered so cant check for exact matching string
         self.assertTrue(html.startswith("<a"))
