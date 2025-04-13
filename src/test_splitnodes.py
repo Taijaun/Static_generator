@@ -84,3 +84,13 @@ class TestSplitNodes(unittest.TestCase):
             ],
             new_nodes,
         )
+
+    def test_empty_string(self):
+        input_text = ""
+        expected_output = []
+        self.assertEqual(text_to_textnodes(input_text), expected_output)
+
+    def test_plain_text(self):
+        input_text = "This is plain text."
+        expected_output = [TextNode("This is plain text.", TextType.TEXT)]
+        self.assertEqual(text_to_textnodes(input_text), expected_output)
