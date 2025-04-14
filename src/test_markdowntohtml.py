@@ -1,5 +1,6 @@
 import unittest
 from markdowntohtmlnode import markdown_to_html_node
+from htmlnode import HTMLNode
 
 class TextMarkDownToHtml(unittest.TestCase):
     def test_paragraphs(self):
