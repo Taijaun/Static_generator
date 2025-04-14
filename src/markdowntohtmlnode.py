@@ -4,7 +4,28 @@ from blocktype import *
 from textnode import *
 from split_nodes import *
 
+def extract_links(text):
+    regex = r"\[([^\]]+)\]\(([^)]+)\)"  # Matches markdown links like [text](url)
+    matches = list(re.finditer(regex, text))  # Find all matches
+    nodes = []
 
+    last_end = 0
+    for match in matches:
+        # Add any plain text before the link
+        if match.start() > last_end:
+            nodes.append(TextNode(text[last_end:match.start()], TextType.TEXT))
+        
+        # Add the link itself as a new node
+        link_text = match.group(1)  # text inside [ ]
+        link_url = match.group(2)
+        nodes.append(TextNode(f"{link_text} ({link_url})", TextType.LINK))
+
+        last_end = match.end()
+
+    if last_end < len(text):
+        nodes.append(TextNode(text[last_end:], TextType.TEXT))
+
+    return nodes
     
 def text_to_children(text):
     # 1. Start with plain text
@@ -12,7 +33,7 @@ def text_to_children(text):
     
     
     # 2. Apply transformations in the correct order
-    nodes = [TextNode(text, TextType.TEXT)]
+    nodes = extract_links(text)
 
     nodes = split_nodes_delimiter(nodes, "**", TextType.BOLD)
     nodes = split_nodes_delimiter(nodes, "_", TextType.ITALIC)
